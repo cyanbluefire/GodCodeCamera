@@ -4,6 +4,13 @@ package com.stickercamera.app.model;
 
 import java.io.Serializable;
 
+/**
+ * TagItem
+ * name
+ * Id   暂时未用到
+ * Type
+ *
+ */
 public class TagItem implements Serializable {
     private static final long serialVersionUID = 2685507991821634905L;
     private long              id;

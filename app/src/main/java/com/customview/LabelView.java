@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,12 @@ import com.stickercamera.app.model.TagItem;
 
 
 /**
- * @author tongqian.ni
+ * @author
+ * 标签只有在照片显示时才加载出来
  */
 public class LabelView extends LinearLayout {
 
+    private static final String TAG = "LabelView";
     private TagItem tagInfo = new TagItem();
     private float parentWidth = 0;
     private float parentHeight = 0;
@@ -55,6 +58,7 @@ public class LabelView extends LinearLayout {
     }
 
     public void init(TagItem tagItem) {
+        Log.e(TAG,"tagItem info:: id=="+tagItem.getId()+" Name=="+tagItem.getName()+" type=="+tagItem.getType());
         tagInfo.setName(tagItem.getName());
         tagInfo.setId(tagItem.getId());
         tagInfo.setType(tagItem.getType());

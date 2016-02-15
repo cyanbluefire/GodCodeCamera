@@ -65,6 +65,7 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView;
  */
 public class PhotoProcessActivity extends CameraBaseActivity {
 
+    private static final String TAG = "PhotoProcessActivity";
     //贴纸、滤镜图片 --cyan图片处理区域
     @InjectView(R.id.gpuimage)
     GPUImageView mGPUImageView;
@@ -286,6 +287,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
             //将照片信息保存至sharedPreference
             //保存标签信息
+            //--cyan* ************去掉标签内容
             List<TagItem> tagInfoList = new ArrayList<TagItem>();
             for (LabelView label : labels) {
                 tagInfoList.add(label.getTagInfo());
@@ -365,7 +367,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     //初始化贴纸 --cyan
     private void initStickerToolBar(){
-
+        Log.w(TAG,"initStickerToolBar()");
         bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this, EffectUtil.addonList));//EffectUtil.addonList 默认贴纸列表
         bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
 
@@ -426,13 +428,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             }
             LabelView label = new LabelView(PhotoProcessActivity.this);
             label.init(tagItem);
-            EffectUtil.addLabelEditable(mImageView, drawArea, label, left, top);
+            EffectUtil.addLabelEditable(mImageView, drawArea, label, left, top);   //添加可编辑移动的标签
             labels.add(label);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG,"onActivityResult");
         labelSelector.hide();
         super.onActivityResult(requestCode, resultCode, data);
         if (AppConstants.ACTION_EDIT_LABEL== requestCode && data != null) {

@@ -32,6 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class EffectUtil {
 
     public static List<Addon> addonList                 = new ArrayList<Addon>();
+    //--cyan所有后续添加的view都放到这个list
     private static List<MyHighlightView> hightlistViews = new CopyOnWriteArrayList<MyHighlightView>();
 
     //添加默认贴纸 --cyan*
@@ -56,6 +57,15 @@ public class EffectUtil {
     }
 
     //添加贴纸 --cyan*
+
+    /**
+     *
+     * @param processImage
+     * @param context
+     * @param sticker 贴纸 类
+     * @param callback
+     * @return
+     */
     public static MyHighlightView addStickerImage(final ImageViewTouch processImage,
                                                   Context context, final Addon sticker,
                                                   final StickerCallback callback) {
@@ -65,7 +75,7 @@ public class EffectUtil {
         }
         StickerDrawable drawable = new StickerDrawable(context.getResources(), bitmap);
         drawable.setAntiAlias(true);
-        drawable.setMinSize(30, 30);
+        drawable.setMinSize(30, 30);//贴纸最小宽度
 
         final MyHighlightView hv = new MyHighlightView(processImage, R.style.AppTheme, drawable);
         //设置贴纸padding
@@ -83,8 +93,9 @@ public class EffectUtil {
 
         Matrix mImageMatrix = processImage.getImageViewMatrix();
 
-        int cropWidth, cropHeight;
-        int x, y;
+        //贴纸图片参数
+        int cropWidth, cropHeight;  //图片宽度，高度
+        int x, y;   //图片位置坐标
 
         final int width = processImage.getWidth();
         final int height = processImage.getHeight();
@@ -96,6 +107,7 @@ public class EffectUtil {
         final int cropSize = Math.max(cropWidth, cropHeight);
         final int screenSize = Math.min(processImage.getWidth(), processImage.getHeight());
         RectF positionRect = null;
+        //超出底图大小
         if (cropSize > screenSize) {
             float ratio;
             float widthRatio = (float) processImage.getWidth() / cropWidth;
@@ -124,6 +136,7 @@ public class EffectUtil {
             y = (int) positionRect.top;
 
         } else {
+            //贴图初始的位置 eg:305.5024, 377.03033 --cyan*
             x = (width - cropWidth) / 2;
             y = (height - cropHeight) / 2;
         }
@@ -134,7 +147,7 @@ public class EffectUtil {
         float[] pts = new float[] { x, y, x + cropWidth, y + cropHeight };
         MatrixUtils.mapPoints(matrix, pts);
 
-        RectF cropRect = new RectF(pts[0], pts[1], pts[2], pts[3]);
+        RectF cropRect = new RectF(pts[0], pts[1], pts[2], pts[3]); //eg:RectF(305.5024, 377.03033, 339.3059, 410.8339)
         Rect imageRect = new Rect(0, 0, width, height);
 
         hv.setup(context, mImageMatrix, imageRect, cropRect, false);
@@ -227,6 +240,7 @@ public class EffectUtil {
             view.getContent().draw(mCanvas);
             mCanvas.restoreToCount(saveCount);
         }
+
     }
 
 }
